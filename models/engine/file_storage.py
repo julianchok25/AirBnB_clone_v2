@@ -29,10 +29,11 @@ class FileStorage:
 
         if not cls:
             return self.__objects
-        else:
-            d = {key: value for key, value in self.__objects.items()
+
+        d = {key: value for key, value in self.__objects.items()
                  if type(value) == cls}
-            return d
+
+        return d
 
     def new(self, obj):
         """sets __object to given obj
@@ -63,6 +64,10 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
+    def close(self):
+        """ specific storage """
+        slef.reload()
+
     def delete(self, obj=None):
         """ Delete obj if its inside """
         if not obj:
@@ -71,5 +76,5 @@ class FileStorage:
         k ="{}.{}".format(type(obj).__name__, obj.id)
 
         if k in self.__objects:
-            del self.objects[k]
+            del self.__objects[k]
             self.save()
