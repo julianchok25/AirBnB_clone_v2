@@ -43,6 +43,24 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
+            # key=value parameters validation
+            if (len(my_list) > 1):
+                dic = {}
+                for arg in range(1, len(my_list)):
+                    k_v = my_list[arg].split("=")
+                    dic[k_v[0]] = k_v[1]
+                for key, value in dic.items():
+                    if (value.startswith('"')):
+                        # Slicing the string withouth ", is the same
+                        # like value[1:len - 1]
+                        value = value[1:-1]
+                        value = value.replace('"', '\\')
+                        value = value.replace('_', ' ')
+                    elif "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    setattr(obj, key, value)
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
