@@ -2,6 +2,8 @@
 """This is the user class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+import os
 
 
 class User(BaseModel, Base):
@@ -12,8 +14,12 @@ class User(BaseModel, Base):
         first_name: first name
         last_name: last name
     """
-    __tablename__ = "users"
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = "users"
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=False)
+        last_name = Column(String(128), nullable=False)
+        place = relationship("Place",
+                             backref="user",
+                             cascade="all, delete-orphan")
