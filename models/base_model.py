@@ -6,15 +6,15 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
 
-Base = declarative_base()
 
+Base = declarative_base()
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(String(60), primary_key=True, nullable=False, unique=True)
+    id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -34,6 +34,12 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+            if not "id" in kwargs:
+                self.id = str(uuid.uuid4())
+            if not "crated_at" in kwargs:
+                self.created_at = datetime.now()
+            if not "updated_at" in kwargs:
+                self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -44,7 +50,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
