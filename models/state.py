@@ -24,7 +24,7 @@ class State(BaseModel, Base):
         def cities(self):
             """Return list of city"""
 
-            city_list =[value for key, value in storage.all(City).items()
-                        if value.state_id == self.id]
+            city_list = [value for key, value in storage.all(City).items()
+                         if value.state_id == self.id]
 
             return city_list

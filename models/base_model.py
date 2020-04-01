@@ -34,11 +34,11 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
-            if not "id" in kwargs:
+            if not in "id" kwargs:
                 self.id = str(uuid.uuid4())
-            if not "crated_at" in kwargs:
+            if not in "crated_at" kwargs:
                 self.created_at = datetime.now()
-            if not "updated_at" in kwargs:
+            if not in "updated_at" kwargs:
                 self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())

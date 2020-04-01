@@ -20,11 +20,11 @@ class DBStorage():
     def __init__(self):
         """ attrs of storage """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                           .format(os.getenv("HBNB_MYSQL_USER"),
-                                   os.getenv("HBNB_MYSQL_PWD"),
-                                   os.getenv("HBNB_MYSQL_HOST"),
-                                   os.getenv("HBNB_MYSQL_DB")),
-                            pool_pre_ping=True)
+                                      .format(os.getenv("HBNB_MYSQL_USER"),
+                                              os.getenv("HBNB_MYSQL_PWD"),
+                                              os.getenv("HBNB_MYSQL_HOST"),
+                                              os.getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
 
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.dropall(self.__engine)
@@ -41,7 +41,7 @@ class DBStorage():
             for cls in classes:
                 query += self.__session.query(cls)
 
-        d = {type(value).__name__+ "." + value.id: value for value in query}
+        d = {type(value).__name__ + "." + value.id: value for value in query}
         return d
 
     def new(self, obj):

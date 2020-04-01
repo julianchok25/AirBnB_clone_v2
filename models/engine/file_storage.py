@@ -31,7 +31,7 @@ class FileStorage:
             return self.__objects
 
         d = {key: value for key, value in self.__objects.items()
-                 if type(value) == cls}
+             if type(value) == cls}
 
         return d
 
@@ -73,7 +73,7 @@ class FileStorage:
         if not obj:
             return
 
-        k ="{}.{}".format(type(obj).__name__, obj.id)
+        k = "{}.{}".format(type(obj).__name__, obj.id)
 
         if k in self.__objects:
             del self.__objects[k]
