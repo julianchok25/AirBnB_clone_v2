@@ -27,7 +27,7 @@ class DBStorage():
                                       pool_pre_ping=True)
 
         if os.getenv("HBNB_ENV") == "test":
-            Base.metadata.dropall(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ all objects of cls d = dict"""
@@ -46,11 +46,7 @@ class DBStorage():
 
     def new(self, obj):
         """ add obj in the DB """
-        if obj:
-            self.__session.add(obj)
-
-        if not obj:
-            return
+        self.__session.add(obj)
 
     def save(self):
         """ Commit in the DB """
@@ -65,7 +61,9 @@ class DBStorage():
         """ create tables """
         Base.metadata.create_all(self.__engine)
 
-        maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(maker)
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        self.__session = scoped_session(Session)
 
-        self.__session = Session()
+    def close(self):
+        """ call remove() """
+        self.__session.remove()
