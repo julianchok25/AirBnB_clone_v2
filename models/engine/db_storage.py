@@ -31,7 +31,7 @@ class DBStorage():
 
     def all(self, cls=None):
         """ all objects of cls d = dict"""
-        classes = [City, State, User, Place]
+        classes = [City, State, User, Place, Review]
         d = {}
         query = []
 
