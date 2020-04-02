@@ -5,6 +5,7 @@ import os
 from sqlalchemy import Float, Integer, Table, ForeignKey, String, Column
 from sqlalchemy.orm import relationship
 
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
