@@ -7,6 +7,13 @@ from sqlalchemy.orm import relationship
 import models
 
 
+place_amenity = Table('place_amenity', Base.metadata, Column(
+    'place_id', String(60), ForeignKey(
+        'places.id'), primary_key=True, nullable=False), Column(
+            'amenity_id', String(60), ForeignKey(
+                'amenities.id'), primary_key=True, nullable=False))
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -37,6 +44,8 @@ class Place(BaseModel, Base):
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review", backref="place",
                                cascade="all, delete, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False)
     else:
         @property
         def reviews(self):
@@ -46,3 +55,22 @@ class Place(BaseModel, Base):
                            all(Review).items() if value.place_id == self.id]
 
             return review_list
+
+        @property
+        def amenities(self):
+            """ Getter attribute amenities that returns the list of Amenity
+            instances based on the attribute amenity_ids that contains all
+            Amenity.id linked to the Place """
+            amenity_list = [value for key, value in models.storage.
+                            all(Amenity).items() if value.place_id == self.id]
+
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, amenity_obj):
+            """
+            Setter attribute amenities that handles append method for adding an
+            Amenity.id o the attribute amenity_ids
+            """
+            if isinstance(amenity_obj, models.Amenity):
+                self.amenities.append(amenity_obj.id)
