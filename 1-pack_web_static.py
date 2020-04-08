@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Creates a .tgz dir [pack from web_static to versions] """
 from datetime import datetime
-from fabric.api import local
+from fabric.operations import local
 
 
 def do_pack():
@@ -13,4 +13,4 @@ def do_pack():
         return "versions/web_static_{}.tgz web_static/".format(datetime.now(
         ).strftime("%Y%m%d%H%M%S"))
     except Exception:
-              return None
+        return None
