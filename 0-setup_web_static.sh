@@ -7,6 +7,5 @@ sudo mkdir -p /data/web_static/releases/test/
 sudo echo -e '<html>\n<head>\n</head>\n<body>\nHolberton School\n</body>\n</html>' > /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-sed -i "s/server_name _;/server_name _;\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n/" /etc/nginx/sites-avail\
-able/default
+sudo sed -i "38i location /hbnb_static {\nalias /data/web_static/current;\n}" /etc/nginx/sites-enabled/default
 sudo service ngnix start
