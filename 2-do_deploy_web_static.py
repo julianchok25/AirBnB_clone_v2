@@ -21,6 +21,7 @@ def do_pack():
     except Exception:
         return None
 
+
 def do_deploy(archive_path):
     """ Deploy files to Server """
     if not os.path.exists(archive_path):
