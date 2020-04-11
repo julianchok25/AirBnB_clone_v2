@@ -62,11 +62,11 @@ def do_clean(number=0):
     if (number == 0 or number == 1):
         #  keep only the most recent version of your archive
         with cd.local('./versions/'):
-            local("ls -rt | head -n +1 | xargs rm -rf")
+            local("ls -t | head -n -1 | xargs rm -rf")
         with cd('/data/web_static_releases/'):
-            run("ls -rt | head -n +1 | xargs rm -rf")
+            run("ls -t | head -n -1 | xargs rm -rf")
     else:
         with cd.local('./versions/'):
-            local("ls -rt | head -n +{} | xargs rm -rf".format(number))
+            local("ls -t | head -n -{} | xargs rm -rf".format(number))
         with cd('/data/web_static_releases/'):
-            run("ls -rt | head -n +{} | xargs rm -rf".format(number))
+            run("ls -t | head -n -} | xargs rm -rf".format(number))
