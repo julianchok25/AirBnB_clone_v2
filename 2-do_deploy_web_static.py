@@ -1,44 +1,43 @@
 #!/usr/bin/python3
-""" Creates a .tgz dir [pack from web_static to versions] """
+""" Program that distributes an archive to your web servers,
+cusing the function do_deploy """
 from datetime import datetime
 from fabric.operations import *
-import os
+from os import path
 
-web01 = "35.229.101.127"
-web02 = "34.224.31.196"
-env.user = "ubuntu"
-env.hosts = [web01, web02]
+env.hosts = ['35.243.214.144', '34.233.133.27']
 
 
 def do_pack():
-    """ pack file into .tgz dir """
+    """ Generates a .tgz archive from the contents of the web_static
+    folder of your AirBnB Clone repo """
+    date_str = datetime.now().strftime('%Y%m%d%H%M%S')
+    local("mkdir -p versions/")
     try:
-        local("mkdir -p versions")
-        local("tar -cvzf versions/web_static_{}.tgz web_static/"
-              .format(datetime.now().strftime("%Y%m%d%H%M%S")))
-        return "versions/web_static_{}.tgz".format(datetime.now(
-        ).strftime("%Y%m%d%H%M%S"))
+        local("tar -cvzf versions/web_static_{}.tgz web_static"
+              .format(date_str))
+        return "versions/web_static_{}.tgz".format(date_str)
     except Exception:
         return None
 
 
 def do_deploy(archive_path):
-    """ Deploy files to Server """
-    if not os.path.exists(archive_path):
+    """ Distributes an archive to the web servers """
+    if not path.exists(archive_path):
         return False
-
-    path = archive_path.split("/")[1]
-    server_dir = "/data/web_static/releases/" + path
+    # split the path and get the second element in the list
+    file_path = archive_path.split("/")[1]
+    serv_folder = "/data/web_static/releases/" + file_path
 
     try:
         put(archive_path, "/tmp/")
-        run("sudo mkdir -p " + server_dir)
-        run("sudo tar -xzf /tmp/" + path + " -C " + server_dir + "/")
-        run("sudo rm /tmp/" + path)
-        run("sudo mv " + server_dir + "/web_static/* " + server_dir)
-        run("sudo rm -rf " + server_dir + "/web_static")
+        run("sudo mkdir -p " + serv_folder)
+        run("sudo tar -xzf /tmp/" + file_path + " -C " + serv_folder + "/")
+        run("sudo rm /tmp/" + file_path)
+        run("sudo mv " + serv_folder + "/web_static/* " + serv_folder)
+        run("sudo rm -rf " + serv_folder + "/web_static")
         run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s " + server_dir + " /data/web_static/current")
+        run("sudo ln -s " + serv_folder + " /data/web_static/current")
         print("New version deployed!")
         return True
     except Exception:
