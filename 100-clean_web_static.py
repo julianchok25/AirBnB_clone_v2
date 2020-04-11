@@ -59,6 +59,7 @@ def deploy():
 def do_clean(number=0):
     """ Deletes out-of-date archives
     number is the number of the archives, including the most recent, to keep"""
+    number = int(number)
     if (number == 0 or number == 1):
         #  keep only the most recent version of your archive
         with cd.local('./versions/'):
@@ -69,4 +70,4 @@ def do_clean(number=0):
         with cd.local('./versions/'):
             local("ls -t | head -n -{} | xargs rm -rf".format(number))
         with cd('/data/web_static_releases/'):
-            run("ls -t | head -n -} | xargs rm -rf".format(number))
+            run("ls -t | head -n -{} | xargs rm -rf".format(number))
