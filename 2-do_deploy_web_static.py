@@ -2,7 +2,7 @@
 """ Program that distributes an archive to your web servers,
 cusing the function do_deploy """
 from datetime import datetime
-from fabric.operations import *
+from fabric.api import *
 from os import path
 
 env.hosts = ['35.243.214.144', '34.233.133.27']
