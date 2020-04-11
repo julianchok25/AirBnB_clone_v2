@@ -60,14 +60,11 @@ def do_clean(number=0):
     """ Deletes out-of-date archives
     number is the number of the archives, including the most recent, to keep"""
     number = int(number)
-    if (number == 0 or number == 1):
-        #  keep only the most recent version of your archive
-        with cd.local('./versions/'):
-            local("ls -t | head -n -1 | xargs rm -rf")
-        with cd('/data/web_static_releases/'):
-            run("ls -t | head -n -1 | xargs rm -rf")
+    # keep only the most recent version of your archive
+    if (number == 1 or number == 0):
+        local('cd versions; ls -t | head -n -1 | xargs rm -rf')
+        run('cd /data/web_static/releases; ls -t | head -n -1 | xargs rm -rf')
     else:
-        with cd.local('./versions/'):
-            local("ls -t | head -n -{} | xargs rm -rf".format(number))
-        with cd('/data/web_static_releases/'):
-            run("ls -t | head -n -{} | xargs rm -rf".format(number))
+        local('cd versions; ls -t | head -n -{} | xargs rm -rf'.format(number))
+        run('cd /data/web_static/releases; ls -t | head -n -{} | xargs rm -rf'.
+            format(number))
