@@ -1,16 +1,17 @@
 #!/usr/bin/python3
-""" Creates a .tgz dir [pack from web_static to versions] """
+""" Program that compress a dir with tar before sending """
 from datetime import datetime
-from fabric.operations import local
+from fabric.api import *
 
 
 def do_pack():
-    """ pack file into .tgz dir """
+    """ Generates a .tgz archive from the contents of the web_static
+    folder of your AirBnB Clone repo """
+    date_str = datetime.now().strftime('%Y%m%d%H%M%S')
+    local("mkdir -p versions/")
     try:
-        local("mkdir -p versions")
-        local("tar -cvzf versions/web_static_{}.tgz web_static/"
-              .format(datetime.now().strftime("%Y%m%d%H%M%S")))
-        return "versions/web_static_{}.tgz web_static/".format(datetime.now(
-        ).strftime("%Y%m%d%H%M%S"))
+        local("tar -cvzf versions/web_static_{}.tgz web_static"
+              .format(date_str))
+        return "versions/web_static_{}.tgz".format(date_str)
     except Exception:
         return None
