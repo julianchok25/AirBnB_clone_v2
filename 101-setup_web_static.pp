@@ -1,5 +1,4 @@
 # Puppet for setup, Redo the task #0
-# Puppet command for task 0
 exec { 'Update Packages':
   command  => 'sudo apt-get update -y',
   provider => shell
