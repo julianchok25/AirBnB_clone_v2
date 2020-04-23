@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, String, ForeignKey, Integer
 import os
 from models.city import City
+import models
 
 
 class State(BaseModel, Base):
@@ -23,8 +24,7 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Return list of city"""
-
-            city_list = [value for key, value in storage.all(City).items()
+            city_list = [value for key, value in
+                         models.storage.all(City).items()
                          if value.state_id == self.id]
-
             return city_list
