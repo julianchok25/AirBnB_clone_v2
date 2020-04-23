@@ -13,7 +13,7 @@ app = Flask(__name__)
 def states_list():
     """  Function that display a HTML page """
     # Fetch in a list of all the values available in a given dictionary
-    states = storage.all("State").values()
+    states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
